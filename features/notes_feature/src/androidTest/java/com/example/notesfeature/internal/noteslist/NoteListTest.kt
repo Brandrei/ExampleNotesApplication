@@ -9,7 +9,6 @@ import com.example.notesfeature.utils.DataBindingIdlingResourceRule
 import com.example.notesfeature.utils.DispatchersRule
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,18 +25,13 @@ class NoteListTest {
     @get:Rule
     val dispatcherRule = DispatchersRule()
 
-    private lateinit var testBackend: TestBackend
-
-    @Before
-    fun before() {
-        activityRule.launchActivity(null)
-        testBackend = activityRule.activity.backendCommunication as TestBackend
-    }
-
     @Test
     fun openFirstNote() {
-        testBackend.setResponseForPath("/notes", Json.encodeToString(fiveNoteList))
-        testBackend.setResponseForPath("/notes/1", Json.encodeToString(fiveNoteList.notes[0]))
+        TestBackend.setResponseForPath("/notes", Json.encodeToString(fiveNoteList))
+        TestBackend.setResponseForPath("/notes/1", Json.encodeToString(fiveNoteList.notes[0]))
+
+        activityRule.launchActivity(null)
+
         notes {
             isVisible()
             clickOnItem(0)
@@ -46,8 +40,11 @@ class NoteListTest {
 
     @Test
     fun notesListIsEmpty() {
-        testBackend.setResponseForPath("/notes", Json.encodeToString(emptyList))
+        TestBackend.setResponseForPath("/notes", Json.encodeToString(emptyList))
         // Test when we get an empty result
+
+        activityRule.launchActivity(null)
+
         notes {
             containsThisManyItems(0)
         }
@@ -55,7 +52,10 @@ class NoteListTest {
 
     @Test
     fun notesListContains5Items() {
-        testBackend.setResponseForPath("/notes", Json.encodeToString(fiveNoteList))
+        TestBackend.setResponseForPath("/notes", Json.encodeToString(fiveNoteList))
+
+        activityRule.launchActivity(null)
+
         notes {
             containsThisManyItems(5)
         }
