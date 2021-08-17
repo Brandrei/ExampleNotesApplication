@@ -36,12 +36,14 @@ class NoteListRobot {
 private fun listWithThisManyItems(count: Int) = ListWithThisManyItems(count)
 
 private class ListWithThisManyItems(private val count:Int) : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
+    private var currentCount = -1
     override fun describeTo(description: Description) {
-        description.appendText("RecyclerView adapter does not have $count items")
+        description.appendText("RecyclerView adapter does not have $count items, it has $currentCount")
     }
 
     override fun matchesSafely(item: RecyclerView): Boolean {
         val adapter = item.adapter ?: return false
+        currentCount = adapter.itemCount
         return adapter.itemCount == count
     }
 }

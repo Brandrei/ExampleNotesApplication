@@ -7,11 +7,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
 import com.example.backend.BackendCommunication
 import com.example.backend_mock.MockBackendCommunication
+import com.example.notesfeature.TestBackend
 import com.example.notesfeature.noteListFragment
 import com.example.notesfeature.notesFragmentFactory
 
 class NotesListTestActivity : FragmentActivity() {
-    private val backendCommunication: BackendCommunication = MockBackendCommunication(this)
+    val backendCommunication: BackendCommunication = TestBackend()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.fragmentFactory = notesFragmentFactory(backendCommunication)
